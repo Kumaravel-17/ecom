@@ -24,8 +24,8 @@ const Nav = () => {
               <FaSearch className='absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400' />
             </div>
 
-            {/* Cart Icon */}
-       <FaShoppingCart className='text-white text-xl cursor-pointer' />
+            
+      <a href="/cart"> <FaShoppingCart className='text-white text-xl cursor-pointer' /></a>
           </div>
         </div>
       </div>

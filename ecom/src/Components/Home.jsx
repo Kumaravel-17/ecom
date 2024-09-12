@@ -10,8 +10,8 @@ const Home = () => {
   return (
     <div>
       <Nav></Nav>
-      <Navbar setSelectedCategory={setSelectedCategory}></Navbar>
-      <Product selectedCategory={selectedCategory} ></Product>
+      <Navbar ></Navbar>
+      <Product  ></Product>
       <Footer/>
     </div>
   )

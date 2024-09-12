@@ -1,99 +1,89 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import Nav from './Nav'; 
+import  Navbar  from './Navlower'; 
 
 const ProductDetails = () => {
   const location = useLocation();
-  const { product } = location.state || {};
   const navigate = useNavigate();
-  const [userQuantity, setUserQuantity] = useState(0);
+  const { product } = location.state || {};
+  const [quantity, setQuantity] = useState(1);
 
-  if (!product) return <div>Product not found</div>;
+  const gocart = (e) => {
+    e.preventDefault();
+
+    let discount = product.price * product.discountPercentage / 100;
+    const item = {
+      id: product.id,
+      quantity: quantity,
+      price: product.price,
+      image: product.thumbnail,
+      discount: discount,
+      availproduct: product.stock
+    };
+
+    let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+    cartItems.push(item);
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+
+    navigate('/cart', { state: { item } });
+  };
 
   const handleQuantityChange = (e) => {
-    const value = parseInt(e.target.value, 10);
-    if (value <= product.stock) {
-      setUserQuantity(value);
-    } else {
-      alert(`Only ${product.stock} items are available. Sorry.`);
+    if (e.target.value > product.stock) {
+      alert(`Only ${product.stock} items in stock!`);
+      e.target.value = product.stock;
     }
+    setQuantity(e.target.value);
   };
-  
-
-  const handleAddToCart = () => {
-    if (userQuantity > 0 && userQuantity <= product.stock) {
-      navigate('/cart', {
-        state: {
-          product: product,
-          quantity: userQuantity,
-        },
-      });
-      alert(`Added ${userQuantity} of ${product.title} to the cart.`);
-    } else {
-      alert('Please enter a valid quantity.');
-    }
-  };
-
-  const discountedPrice = product.price * (1 - product.discountPercentage / 100);
 
   return (
-    <div className="flex justify-center items-center py-8 ps-4 lg:ps-12 bg-white">
-      <div className="max-w-6xl w-full flex flex-col lg:flex-row items-center gap-12">
-        <div className="w-full lg:w-1/2 flex justify-center h-[700px]">
-          <img
-            src={product.thumbnail}
-            alt={product.title}
-            className="w-full h-[400px] object-cover rounded-lg shadow-md"
-          />
+    <>
+      <Nav />
+      <Navbar />
+      <div className="flex flex-col justify-center items-center mt-10 w-full">
+        <div className="border-black border-solid sm:m-3 border-[4px] p-5 w-[90%] sm:w-[70%] md:w-[50%] lg:w-[40%] xl:w-[30%]">
+          <center>
+            <div className="font-serif text-2xl">{product.title}</div>
+          </center>
+          <div className="mt-5 flex justify-center">
+            <img
+              src={product.thumbnail}
+              alt={product.title}
+              className="h-[100px] sm:h-[200px] md:h-[200px] lg:h-[250px] xl:h-[200px]"
+            />
+          </div>
+          <div className="mt-4 text-lg">
+            <p><strong>Price: </strong>${product.price}</p>
+            <p><strong>Stock: </strong>{product.stock}</p>
+            <p><strong>Quantity: </strong></p>
+            <input
+              type="number"
+              min="1"
+              value={quantity}
+              onChange={handleQuantityChange}
+              className="border border-gray-400 px-2 py-1 mt-2 w-[70px]"
+            />
+            <center><button className="bg-black w-[70px] text-white rounded-sm" onClick={gocart}>Add</button></center>
+          </div>
         </div>
-
-        <div className="w-full lg:w-1/2 flex flex-col items-start">
-          <h1 className="text-3xl font-bold text-gray-800 mb-4">{product.title}</h1>
-          <p className="text-lg text-gray-600 mb-4">{product.description}</p>
-          <div className="flex items-center mb-4">
-            <span className="text-2xl font-bold text-green-500">
-              ${discountedPrice.toFixed(2)}
-            </span>
-            <span className="text-lg text-red-500 ml-4">{product.discountPercentage}% off</span>
-          </div>
-          <div className="text-lg font-semibold mb-2">
-            Rating: <span className="text-yellow-500">{product.rating} / 5</span>
-          </div>
-          <div className="text-lg font-semibold mb-2">
-            Stock: {product.stock} (Status: {product.availabilityStatus})
-          </div>
-          <div className="text-lg font-semibold mb-2">
-            SKU: {product.sku}
-          </div>
-          <div className="text-lg font-semibold mb-2">
-            Weight: {product.weight} g
-          </div>
-          <div className="text-lg font-semibold mb-2">
-            Warranty: {product.warrantyInformation}
-          </div>
-          <div className="text-lg font-semibold mb-2">
-            Shipping Info: {product.shippingInformation}
-          </div>
-          <div className="text-lg font-semibold mb-2">
-            Return Policy: {product.returnPolicy}
-          </div>
-
-          <input
-            type="number"
-            min={0}
-            value={userQuantity}
-            onChange={handleQuantityChange}
-            className="mt-4 p-2 w-20 border border-black-300 rounded"
-          />
-          <button
-            className="bg-black text-white h-8 w-48 mt-4"
-            onClick={handleAddToCart}
-          >
-            Add to Cart
-          </button>
+        <div className="mx-[10%]">
+          <p><strong>Description: </strong>{product.description}</p>
+          <p><strong>Category: </strong>{product.category}</p>
+          <p><strong>Discount: </strong>{product.discountPercentage}%</p>
+          <p><strong>Rating: </strong>{product.rating}</p>
+          <p><strong>Brand: </strong>{product.brand}</p>
+          <p><strong>SKU: </strong>{product.sku}</p>
+          <p><strong>Weight: </strong>{product.weight}g</p>
+          <p><strong>Dimensions: </strong>{`W: ${product.dimensions.width}cm, H: ${product.dimensions.height}cm, D: ${product.dimensions.depth}cm`}</p>
+          <p><strong>Warranty: </strong>{product.warrantyInformation}</p>
+          <p><strong>Shipping Info: </strong>{product.shippingInformation}</p>
+          <p><strong>Availability: </strong>{product.availabilityStatus}</p>
+          <p><strong>Return Policy: </strong>{product.returnPolicy}</p>
+          <p><strong>Minimum Order Quantity: </strong>{product.minimumOrderQuantity}</p>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

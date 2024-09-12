@@ -1,7 +1,13 @@
 import React from 'react';
-
+import Nav from './Nav';
+import Navbar from './Navlower';
 const About = () => {
   return (
+     
+    <>
+    <Nav></Nav>
+    <Navbar></Navbar>
+
     <div className="bg-gray-100 py-10">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10">
@@ -15,7 +21,7 @@ const About = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
       
-          <div className="bg-white p-6 rounded-lg shadow-lg">
+          <div className="bg-white p-6 rounded-lg ">
             <h3 className="text-2xl font-bold text-gray-900">Our Mission</h3>
             <p className="mt-4 text-gray-600">
               Our mission is to provide customers with an exceptional shopping experience by offering a
@@ -25,7 +31,7 @@ const About = () => {
           </div>
 
           
-          <div className="bg-white p-6 rounded-lg shadow-lg">
+          <div className="bg-white p-6 rounded-lg ">
             <h3 className="text-2xl font-bold text-gray-900">Our Story</h3>
             <p className="mt-4 text-gray-600">
               Founded in 2020, we started as a small online shop with the vision of making shopping
@@ -38,7 +44,7 @@ const About = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-10">
        
-          <div className="bg-white p-6 rounded-lg shadow-lg">
+          <div className="bg-white p-6 rounded-lg ">
             <h3 className="text-2xl font-bold text-gray-900">Customer Focus</h3>
             <p className="mt-4 text-gray-600">
               Our customers are at the heart of everything we do. We value your feedback and strive to
@@ -47,7 +53,7 @@ const About = () => {
           </div>
 
       
-          <div className="bg-white p-6 rounded-lg shadow-lg">
+          <div className="bg-white p-6 rounded-lg ">
             <h3 className="text-2xl font-bold text-gray-900">Quality Guarantee</h3>
             <p className="mt-4 text-gray-600">
               We stand by the quality of the products we sell. If you're not satisfied with your
@@ -58,6 +64,7 @@ const About = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
